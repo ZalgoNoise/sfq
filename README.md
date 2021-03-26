@@ -62,7 +62,7 @@ Here is an example of the `test()` function, which provides a clear picture of t
 
 ```javascript
 function test() {
-  reports = SalesforceListReports(cookieString, reportsList)
+  reports = sfq.SalesforceListReports(cookieString, reportsList)
   
   // get all entries in the first report
   Logger.log(reports[0])
