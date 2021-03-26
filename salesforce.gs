@@ -59,7 +59,7 @@ const tableTypeEnum = [
 //          - if type is urlData, then content will be a list of content objects for url, and data
 //
 function test() {
-  reports = SalesforceGetReports(cookieString, reportsList)
+  reports = SalesforceListReports(cookieString, reportsList)
   
   // get all entries in the first report
   Logger.log(reports[0])
@@ -99,10 +99,10 @@ function SalesforceGetReport(cookie, report) {
   
 }
 
-// SalesforceGetReports function will take in a 
+// SalesforceListReports function will take in a 
 // cookie and a list of report URLs to return a 
 // list of maps, with its contents
-function SalesforceGetReports(cookie, reportsList) {
+function SalesforceListReports(cookie, reportsList) {
 
   var results = [];
   
