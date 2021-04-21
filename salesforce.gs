@@ -107,22 +107,52 @@ const tableTypeEnum = [
   'urlData'
 ]
 
+/**
+ * Report class will represent a Salesforce Report which 
+ * can be fetched and deconstructed into organized objects
+ */
 class Report {
+
+  /** 
+   * @param {string} cookie cookie - the Cookie header string
+   * content, which will authenticate the HTTP request
+   * @param {string} url url - the Salesforce Report (hardcoded) URL
+   */
   constructor(cookie, url){
     this.error = [];
     this.rawHTML = "";
     this.content = [];
     this.objects = [];
 
+    /**
+     * Panic method will add errors to the error property, and log 
+     * them to the console as an error
+     * 
+     * @param {string} error error - The error message to log
+     */
     this.Panic = function(error) {
       this.error.push(error)
       console.error(error)
     }
 
+    /**
+     * Error method will return the existing errors from the executions
+     * from this classes' methods
+     * 
+     * @return {string[]} Returns a list of errors from the methods' executions
+     */
     this.Errors = function() {
       return this.error
     }
 
+    /**
+     * SetCookie method will define a cookie string from either a (direct) string 
+     * or from the Header contents of a supplied cURL command
+     * 
+     * @param {string} cookie cookie - The Cookie string value from the header param in the 
+     * cURL command, or the entire cURL command itself
+     *
+     */
     this.SetCookie = function(cookie) {
       if (cookie.match(RegExp("^curl .*"))) {
         var params = cookie.split("'")
@@ -141,10 +171,23 @@ class Report {
       return
     };
 
+    /**
+     * GetCookie method will return the defined Cookie value in this object
+     * 
+     * @return {string} Returns the defined Cookie string
+     */
     this.GetCookie = function() {
       return this.cookie
     }
 
+    /**
+     * SetURL method will define a URL string from either a (direct) string 
+     * or from the URL present in a supplied cURL command
+     * 
+     * @param {string} url url - The URL string value from the cURL command, 
+     * or the entire cURL command itself
+     *
+     */
     this.SetURL = function(url) {
       if (url.match(RegExp("^curl .*"))) {
         var params = cookie.split("'")
@@ -161,7 +204,11 @@ class Report {
       return
     };
 
-
+    /**
+     * GetURL method will return the defined URL value in this object
+     * 
+     * @return {string} Returns the defined URL string
+     */
     this.GetURL = function() {
       return this.url
     }
@@ -174,6 +221,12 @@ class Report {
       this.SetURL(url)
     }
     
+    /**
+     * Fetch method will perform the needed actions to:
+     *   - fetch the raw HTML from the Salesforce Report
+     *   - split the table content into rows (with the content list)
+     *   - create objects with the retrieved data (with the objects list)
+     */
     this.Fetch = function() {
       
       function getTable(input) {
@@ -396,14 +449,35 @@ class Report {
       this.objects = getRows(this.content)
     }
 
+    /**
+     * GetObjects method will return the extracted objects list from the 
+     * Salesforce Report
+     * 
+     * @return {Object[][]} Returns a list of Reports entries, in objects
+     */
     this.GetObjects = function() {
       return this.objects
     }
 
+    /**
+     * GetGrandTotals method will return the amount of extracted objects 
+     * list from the Salesforce Report
+     * 
+     * @return {int} Returns the amount of Reports entries
+     */
     this.GetGrandTotals = function() {
       return this.objects.length
     }
 
+    /**
+     * GetEntry method will return an extracted object from the list of 
+     * Salesforce Report objects
+     * 
+     * @param {int} index index - the index value for the entry to retrieve
+     * 
+     * @return {Object[]} Returns an object from the list of Salesforce Report 
+     * objects
+     */
     this.GetEntry = function(index) {
       return this.objects[index]
     }
